@@ -3,6 +3,7 @@ import { OPTIONS, prisma } from "../../auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import { userRole } from "../../export/userrole";
 import { IUserRoleResult } from "../../models/userroleresult";
+import { IAssignment } from "../../models/assignemnts";
 
 export async function DELETE(request: Request){
     const session = await getServerSession(OPTIONS);
@@ -12,7 +13,7 @@ export async function DELETE(request: Request){
     const response = await userRole();
     const userRoleResult: IUserRoleResult = await response.json();
     if (userRoleResult && userRoleResult.role?.role_name === 'TEACHER'){
-        const {assignment_id} = await request.json();
+        const {assignment_id}: IAssignment = await request.json();
         if (!assignment_id){
             return NextResponse.json({error: 'Hiányzó adatok!'}, {status: 400});
         }
@@ -39,13 +40,12 @@ export async function POST(request: Request){
     const userRoleResult: IUserRoleResult = await response.json();
     if (userRoleResult && userRoleResult.role?.role_name === 'TEACHER'){
         try{
-            const {assignment_name, description, course_id, due_date} = await request.json();
+            const {assignment_name, description, course_id}: IAssignment = await request.json();
             const assignment = await prisma.assignments.create({
                 data: {
                     title: assignment_name,
                     description: description,
                     course_id: course_id,
-                    due_date: due_date,
                 },
             });
             return NextResponse.json(assignment, {status: 200});

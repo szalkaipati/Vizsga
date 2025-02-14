@@ -15,6 +15,7 @@ model User {
   emailVerified DateTime?
   image         Int?
   roleId        Int             @default(2)
+  subsribed     Boolean         @default(false)
   accounts      Account[]
   sessions      Session[]
   submissions   Submissions[]
@@ -47,6 +48,7 @@ model Courses{
     created_at         DateTime         @default(now())
     document_id        Int?
     enrollment         Enrollments[]
+    assignments        Assignments[]
 }
 
 
@@ -59,11 +61,11 @@ model Course_materials{
 
 model Assignments{
     assingment_id       String          @id @default(cuid())
-    course_id           String
+    course_id           Int
     title               String
     description         String
-    due_date            DateTime
-    created_at          DateTime        @default(now())          
+    created_at          DateTime        @default(now())
+    course              Courses         @relation(fields: [course_id], references: [course_id], onDelete: Cascade)         
 }
 
 model Submissions{

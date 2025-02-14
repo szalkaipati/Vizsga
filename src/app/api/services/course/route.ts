@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import NextAuth, { getServerSession } from 'next-auth';
 import { userRole } from '../../export/userrole';
 import { IUserRoleResult } from '../../models/userroleresult';
+import { ICourse } from '../../models/course';
 
 export async function GET(){
     const session = await NextAuth(OPTIONS);
@@ -29,14 +30,13 @@ export async function POST(request: NextRequest) {
     if (!session) {
         return NextResponse.json({ role: 'GUEST' }, { status: 200 });
     }
-
     const response = await userRole();
     const userRoleResult: IUserRoleResult = await response.json();
 
-    if (userRoleResult && userRoleResult.role.role_name === 'USER') {
+    if (userRoleResult && userRoleResult.role.role_name === 'TEACHER') {
         try{
             const body = await request.json();
-            const { course_id, email } = body;
+            const { course_id, email }: ICourse = body;
             console.log('Kapott adatok:', { course_id, email }); // Debugging log
         
             if (!course_id || !email) {
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
                     }
                 });
 
-                console.log("Beiratkozás sikeres:", enroll); // Sikeres beiratkozás log
+                console.log("Beiratkozás sikeres:", enroll); 
                 return NextResponse.json(enroll, { status: 200 });
             } catch (error) {
                 console.error("Error during enrollment:", error);
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(req: Request){
     const session = await getServerSession(OPTIONS);
     if (!session){
-        return NextResponse.json({role: 'GUEST'}, {status: 200});
+        return NextResponse.json({rola_name: 'GUEST'}, {status: 200});
     }
     const response = await userRole();
     const userRoleResult: IUserRoleResult = await response.json();
