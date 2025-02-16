@@ -32,8 +32,6 @@ model User {
   @@map("Users")
 }
 
-
-
 model Roles{
    id                  Int               @id @default(autoincrement())          
    role_name           String            @unique
@@ -46,17 +44,18 @@ model Courses{
     course_name        String
     description        String
     created_at         DateTime         @default(now())
-    document_id        Int?
     enrollment         Enrollments[]
     assignments        Assignments[]
+    materials          Course_materials[]
 }
 
 
 model Course_materials{
     material_id         String          @id @default(cuid())
-    course_id           String
-    document_id         String
+    courseId           Int
     created_at          DateTime        @default(now())
+    file                Files[]
+    course              Courses         @relation(fields: [courseId], references: [course_id], onDelete: Cascade)
 }
 
 model Assignments{
@@ -65,16 +64,19 @@ model Assignments{
     title               String
     description         String
     created_at          DateTime        @default(now())
-    course              Courses         @relation(fields: [course_id], references: [course_id], onDelete: Cascade)         
+    course              Courses         @relation(fields: [course_id], references: [course_id], onDelete: Cascade) 
+    files               Files[]        
 }
 
-model Submissions{
-    submission_id       String          @id @default(cuid())
-    assignment_id       String
-    user_id             String
-    document_id         String
-    submission_date     DateTime        @default(now())
-    user                User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model Submissions {
+  submission_id   String   @id @default(cuid())
+  assignment_id   String
+  user_id         String
+  submission_date DateTime @default(now())
+  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  files           Files[]
+
+  @@map("Submissions")
 }
 
 model Enrollments{
@@ -87,15 +89,18 @@ model Enrollments{
     @@unique([course_id, email], name: "course_id_email")
 }
 
-model Documents{
-    document_id        String          @id @default(cuid())
-}
-
-model Document_files{
-    file_id            String          @id  @default(cuid())
-    document_id        String
-    file_path          String
-    created_at         DateTime        @default(now())
+model Files {
+  file_id             String           @id @default(cuid())
+  file_name           String
+  mimetype            String
+  created_at          DateTime         @default(now())
+  submissionId        String
+  assignmentId        String
+  coursematerialId    String
+  submission          Submissions      @relation(fields: [submissionId], references: [submission_id], onDelete: Cascade)
+  assignments         Assignments      @relation(fields: [assignmentId], references: [assingment_id], onDelete: Cascade)
+  material            Course_materials @relation(fields: [coursematerialId], references: [material_id], onDelete: Cascade)
+  @@map("Files")
 }
  
 model Account {
