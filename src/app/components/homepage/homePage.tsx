@@ -112,7 +112,7 @@ const HomePage: React.FC = () => {
                 <hr/>
                 <p>létrehozhat oktató anyagokat<br/>
                 látja a videóval kapcsolatos anyagokat(nézettségek száma, kik látták)<br/>
-                kurzusára felvehet, vagy tilthat tanulókat</p>
+                kurzusára felvehet, vagy tilthat tanulókat.</p>
                 </div>
             </div>
             </div>
