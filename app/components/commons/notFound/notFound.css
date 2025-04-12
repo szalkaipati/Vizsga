@@ -1,0 +1,20 @@
+
+#notfound {
+    font-size: 3rem;
+    
+}
+
+
+.notfound {
+    background-blend-mode:darken; background-color:rgba(0, 0, 0, 0.607);   
+    width: 80%;
+    margin-top: 10%;   
+    margin-left: 10% ;
+    border-radius: 5px;
+    text-align: center;
+    
+}
+#text{
+    color: rgb(160, 42, 42);
+}
+
