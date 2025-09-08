@@ -34,7 +34,7 @@ export default function Videos() {
   return (
     <div className="background py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <h1>Uploaded Videos</h1>
+        <h1>Videó feltöltés</h1>
 
         <div className="flex justify-center mb-6">
           <input
@@ -48,7 +48,7 @@ export default function Videos() {
 
         <div className="card-container">
           {filteredVideos.length === 0 ? (
-            <p className="col-span-full text-center text-lg text-gray-500">No videos found matching the title.</p>
+            <p className="col-span-full text-center text-lg text-gray-500">Nincs találat.</p>
           ) : (
             filteredVideos.map((video, index) => (
               <div key={index} className="video-card">
@@ -86,7 +86,7 @@ export default function Videos() {
                     rel="noopener noreferrer"
                     className="button view-btn"
                   >
-                    <span className="text-xl">👁️</span> View
+                    <span className="text-xl">View</span> 
                   </a>
                 </div>
               </div>

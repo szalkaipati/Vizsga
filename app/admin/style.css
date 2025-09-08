@@ -82,3 +82,26 @@ hr{
     width: 70px;
     cursor: pointer;
 }
+.delete{
+    background-color: rgb(145, 39, 39);
+    border:#000000 solid 1px;
+
+}
+
+.delete:hover{
+    background-color: rgb(102, 16, 16);
+    cursor: pointer;
+    
+}
+.deleteVideo{
+    background-color: rgba(159, 26, 26, 0.753);
+    border:#000000 solid 1px;
+}
+.deleteVideo:hover{
+    background-color: rgba(114, 11, 11, 0.717);
+    cursor: pointer;
+    
+}
+div{
+    overflow-wrap: break-word;
+}

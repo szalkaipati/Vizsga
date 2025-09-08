@@ -90,7 +90,7 @@ export default function Upload() {
           onClick={handleUpload}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4"
         >
-          Upload Video
+          Videó feltöltés
         </button>
       )}
 
@@ -98,7 +98,7 @@ export default function Upload() {
         <div className="w-full max-w-md mt-4">
           <video controls className="w-full rounded-md shadow-lg">
             <source src={videoURL} type={videoFile?.type} />
-            Your browser does not support the video tag.
+            A böngésződ nem támogatja ezt a videó típusot.
           </video>
         </div>
       )}

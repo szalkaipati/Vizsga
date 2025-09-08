@@ -2,27 +2,39 @@
 import Link from 'next/link';
 import './style.css';
 import { useState } from 'react';
+import NavBar from '../components/navbar/navBar';
 
-export interface User {
+export interface Tanar {
   id: string;
   name: string;
   email: string;
-  videos: string[];
+  videos?: string[];
+}
+export interface Tanulo {
+  id: string;
+  name: string;
+  email: string;
 }
 
-export const profiles: User[] = [
-  { id: "u1", name: "Profil1", email: "Profil1@gmail.com", videos: ["Video1", "Video2", "Video3"] },
-  { id: "u2", name: "Profil2", email: "Profil2@gmail.com", videos: ["VideoA", "VideoB"] },
-  { id: "u3", name: "Profil3", email: "Profil3@gmail.com", videos: ["VideoX", "VideoY", "VideoZ"] },
-  { id: "u4", name: "Profil4", email: "Profil4@gmail.com", videos: ["VideoM", "VideoN", "VideoO", "VideoP"] },
+export const tanarok: Tanar[] = [
+  { id: "u1", name: "Lilla", email: "lilla1975@gmail.com", videos: ["C# bevezető", "C# Lista", "C# gyakorló"] },
+  { id: "u2", name: "Zsófi", email: "zsófi.szabo2002@gmail.com", videos: ["Javascript 1", "Javascript 2"] },
+  { id: "u3", name: "Botond", email: "botond.kov@gmail.com", videos: ["Tesztelés: minták", "Tesztelés: selenium", "Tesztelés: cypress"] },
+  { id: "u4", name: "Krisztina", email: "krisztina@gmail.com", videos: ["HTML", "CSS", "Bootstrap", "Összefoglaló (HTML, CSS, Bootstrap)"] },
+];
+export const tanulok: Tanulo[] = [
+  { id: "u1", name: "Szaffi", email: "takacs.szaffiii@gmail.com"},
+  { id: "u2", name: "Tibor", email: "tibi@gmail.com"},
+  { id: "u3", name: "Laci", email: "lacimeszaros@gmail.com"},
+  { id: "u4", name: "Álmos", email: "almosfazekas@gmail.com"},
 ];
 
 export default function AdminPage() {
-  const [students, setStudents] = useState<User[]>(profiles.slice(2));
-  const [teachers, setTeachers] = useState<User[]>(profiles.slice(0, 2));
+  const [students, setStudents] = useState<Tanulo[]>(tanulok);
+  const [teachers, setTeachers] = useState<Tanar[]>(tanarok);
 
   const [search, setSearch] = useState<string>('');
-  const [roleFilter, setRoleFilter] = useState<'all' | 'teacher' | 'student'>('all');
+  const [roleFilter, setRoleFilter] = useState<'all' | 'tanárok' | 'tanulók'>('all');
 
   const promoteToTeacher = (studentId: string) => {
     const studentToPromote = students.find(student => student.id === studentId);
@@ -34,13 +46,20 @@ export default function AdminPage() {
 
   const demoteToStudent = (teacherId: string) => {
     const teacherToDemote = teachers.find(teacher => teacher.id === teacherId);
-    if (teacherToDemote) {
-      setTeachers(prev => prev.filter(teacher => teacher.id !== teacherId));
-      setStudents(prev => [...prev, teacherToDemote]);
+    //
+    if (confirm( "Kiválasztott tanár: " + teacherToDemote?.name + "\nBiztos legyen diák?\nA videók törlődni fognak!")) {
+      if (teacherToDemote) {
+        setTeachers(prev => prev.filter(teacher => teacher.id !== teacherId));
+        setStudents(prev => [...prev, teacherToDemote]);
+      }
+    } else {
+      return
     }
+    
   };
 
   const deleteUser = (userId: string, isTeacher: boolean) => {
+    window.confirm("Biztos törli?");
     if (isTeacher) {
       setTeachers(prev => prev.filter(teacher => teacher.id !== userId));
     } else {
@@ -52,13 +71,13 @@ export default function AdminPage() {
     if (isTeacher) {
       setTeachers(prev => {
         return prev.map(teacher => 
-          teacher.id === userId ? { ...teacher, videos: teacher.videos.filter(video => video !== videoTitle) } : teacher
+          teacher.id === userId ? { ...teacher, videos: teacher.videos?.filter(video => video !== videoTitle) } : teacher
         );
       });
     } else {
       setStudents(prev => {
         return prev.map(student => 
-          student.id === userId ? { ...student, videos: student.videos.filter(video => video !== videoTitle) } : student
+          student.id === userId ? { ...student } : student
         );
       });
     }
@@ -66,44 +85,45 @@ export default function AdminPage() {
 
   const filteredTeachers = teachers.filter(profile => 
     (profile.name.toLowerCase().includes(search.toLowerCase()) || profile.email.toLowerCase().includes(search.toLowerCase())) &&
-    (roleFilter === 'all' || roleFilter === 'teacher')
+    (roleFilter === 'all' || roleFilter === 'tanárok')
   );
 
   const filteredStudents = students.filter(profile => 
     (profile.name.toLowerCase().includes(search.toLowerCase()) || profile.email.toLowerCase().includes(search.toLowerCase())) &&
-    (roleFilter === 'all' || roleFilter === 'student')
+    (roleFilter === 'all' || roleFilter === 'tanulók')
   );
 
   return (
     <>
+    <NavBar/>
       <div className="background">
-        <h1 className="adminPage">Admin Page</h1>
-        <h3>Search</h3>
+        <h1 className="adminPage">Admin oldal</h1>
+        <h3>Keresés</h3>
         <form action="">
           <div>
-            <p>Search by Name or Email:</p>
+            <p>Keresés név vagy email alapján:</p>
             <input 
               type="text" 
               name="search" 
               id="searchProfile" 
-              placeholder="Search..." 
+              placeholder="Keresés..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div>
-            <p>Filter by Role:</p>
-            <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value as 'all' | 'teacher' | 'student')}>
-              <option value="all">All</option>
-              <option value="teacher">Teachers</option>
-              <option value="student">Students</option>
+            <p>Filter:</p>
+            <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value as 'all' | 'tanárok' | 'tanulók')}>
+              <option value="all">Összes</option>
+              <option value="tanárok">Tanárok</option>
+              <option value="tanulók">Tanulók</option>
             </select>
           </div>
         </form>
 
-        <h2>Teachers</h2>
+        <h2>Tanárok</h2>
         {filteredTeachers.length === 0 ? (
-          <p>No teachers found</p>
+          <p>Nincs tanár</p>
         ) : (
           filteredTeachers.map((profile) => {
             return (
@@ -119,15 +139,15 @@ export default function AdminPage() {
                   </Link>
                 </div>
                 <div id="profile">
-                  {profile.videos.map((video, index) => (
+                  {profile.videos?.map((video, index) => (
                     <div key={index}>
                       {video}
-                      <button onClick={() => removeVideo(profile.id, video, true)}>Remove Video</button>
+                      <button className='deleteVideo' onClick={() => removeVideo(profile.id, video, true)}>Videó törlése</button>
                     </div>
                   ))}
                 </div>
-                <button onClick={() => demoteToStudent(profile.id)}>Demote to Student</button>
-                <button onClick={() => deleteUser(profile.id, true)}>Delete</button>
+                <button onClick={() => demoteToStudent(profile.id)}>Legyen diák?</button>
+                <button className='delete' onClick={() => deleteUser(profile.id, true)}>Törlés</button>
               </div>
             );
           })
@@ -135,9 +155,9 @@ export default function AdminPage() {
 
         <hr />
 
-        <h2>Students</h2>
+        <h2>Diákok</h2>
         {filteredStudents.length === 0 ? (
-          <p>No students found</p>
+          <p>Nincsenek diákok</p>
         ) : (
           filteredStudents.map((profile) => {
             return (
@@ -152,16 +172,9 @@ export default function AdminPage() {
                     {profile.email}
                   </Link>
                 </div>
-                <div id="profile">
-                  {profile.videos.map((video, index) => (
-                    <div key={index}>
-                      {video}
-                      <button onClick={() => removeVideo(profile.id, video, false)}>Remove Video</button>
-                    </div>
-                  ))}
-                </div>
-                <button onClick={() => promoteToTeacher(profile.id)}>Promote to Teacher</button>
-                <button onClick={() => deleteUser(profile.id, false)}>Delete</button>
+                
+                <button onClick={() => promoteToTeacher(profile.id)}>Legyen tanár?</button>
+                <button className='delete' onClick={() => deleteUser(profile.id, false)}>Törlés</button>
               </div>
             );
           })

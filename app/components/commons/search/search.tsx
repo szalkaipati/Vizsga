@@ -48,7 +48,7 @@ function Search() {
      {isOpen && (
         <div className="search-popup" ref={popupRef}>
           <div className="popup-content">
-            <p>Results for: <strong>{searchQuery}</strong></p>
+            <p>Eredmény: <strong>{searchQuery}</strong></p>
           </div>
         </div>
       )}

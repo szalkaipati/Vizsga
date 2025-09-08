@@ -8,11 +8,11 @@ import "./notFound.css";
         <div className="notfound">
           <div className="notfound">  
               <h1>404</h1>
-              <p className="text">oops! <br/>page not found!</p>
+              <p className="text">oopsz! <br/>Az oldalt nem találtuk!</p>
           </div>
           
           <Link to="/">
-            <button > Go back </button>
+            <button > Vissza </button>
           </Link>
         </div>
     </>

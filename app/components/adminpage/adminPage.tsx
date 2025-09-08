@@ -59,7 +59,7 @@ export const profiles: User[] = [
                         </div>
                     </form>
                     
-                    <h2>Teachers</h2>
+                    <h2>Tanárok</h2>
                      {profiles.map((profile) => {
                                 return (
                                 <div id="profiles" key={profile.id}>
@@ -83,7 +83,7 @@ export const profiles: User[] = [
                             })}
                             <hr />
                             <Outlet />
-                            <h2>Students</h2>
+                            <h2>Diákok</h2>
                             {profiles.map((profile) => {
                                 return (
                                 <div id="profiles"  key={profile.id}>

@@ -78,7 +78,7 @@ function LoginButton() {
 
     const handleClick = () => {
         if (buttonText === 'bejelentkezés') {
-            window.open('/api/auth/signin', 'Sign In', 'width=500,height=600');
+            window.open('skhill/src/api/auth/signin', 'Sign In', 'width=500,height=600');//E:\2024_2025\Új mappa\git-skhill\skhill\src\app\api\auth
         } else {
             setButtonText('bejelentkezés');
         }
