@@ -42,22 +42,23 @@ const HomePage: React.FC = () => {
                 <div id="videocontainer1" className="videocontainer">
               
                 <div id="100video-box" className="box4">
-                  <div className="videokep"><iframe width="200" height="100" src="https://www.youtube.com/embed/FQdaUv95mR8?si=9_MgYWqFnve8T9xl" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  <div className="videokep"><iframe width="200" height="100" src="" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
                 </div>
               
                 <div id="110video-box" className="box4">
-                  <div className="videokep"><iframe width="200" height="100" src="https://www.youtube.com/embed/FQdaUv95mR8?si=9_MgYWqFnve8T9xl" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  <div className="videokep"><iframe width="200" height="100" src="" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
                 </div>
                 
                 <div id="120video-box" className="box4">
-                  <div className="videokep"><iframe width="200" height="100" src="https://www.youtube.com/embed/FQdaUv95mR8?si=9_MgYWqFnve8T9xl" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  <div className="videokep"><iframe width="200" height="100" src="" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
                 </div>
                 
                 <div id="130video-box" className="box4">
-                  <div className="videokep"><iframe width="200" height="100" src="https://www.youtube.com/embed/FQdaUv95mR8?si=9_MgYWqFnve8T9xl" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  <div className="videokep"><iframe width="200" height="100" src="
+                  " title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
                 </div>
             </div>
@@ -134,7 +135,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div>
-              <p className="text-right">Copyright © 2024 Skill Hill - Bolyai Szakgimnázium. Minden jog fenntartva!</p>
+              <p className="text-right">Copyright © 2024 Skill Hill - BMSZC Bolyai János Technikum és Kollégium. Minden jog fenntartva!</p>
             </div>
           </div>
           </>
