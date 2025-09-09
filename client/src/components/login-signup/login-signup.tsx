@@ -1,4 +1,3 @@
-"use client";
 import './login-signup.css';
 //import { usePopup } from '../../popupContext';
 

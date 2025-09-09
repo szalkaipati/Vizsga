@@ -65,7 +65,6 @@ function Button() {
 export {LoginButton, Button};*/
 
 
-"use client";
 import { useState } from 'react';
 import './button.css';
 import LoginSignup from '../login-signup/login-signup';

@@ -1,4 +1,3 @@
-"use client";
 // import { createBrowserRouter, Route, Routes } from "react-router-dom";
 // import HomePage from "./components/homepage/homePage";
 // import NavBar from "./components/NavBar";

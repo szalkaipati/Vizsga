@@ -1,4 +1,3 @@
-"use client";
 import Link from 'next/link';
 import './style.css';
 import { useState } from 'react';
