@@ -1,8 +1,5 @@
-'use client';
 import { useState } from "react";
-import { LoginButton } from "../commons/button";
 import './navBar.css';
-import Search from "../commons/search/search";
 import { Link } from "react-router-dom";
 import { UploadButton } from "../commons/uploadButton/uploadButton";
 // import Modal from "../modal";
@@ -30,13 +27,11 @@ const Navbar = () => {
             </Link>
           </div>
           
-          <div className="search">
+          {/* <div className="search">
             <Search />
-          </div>
+          </div> */}
 
           {(currentRole === 'tanár' || currentRole === 'admin') && <UploadButton />}
-          
-          <div><LoginButton /></div>
 
           <button className="admin-button">
             <Link to="/admin" passHref>

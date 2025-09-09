@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import Banner from '../commons/banner/banner';
-//import React, { useState, useEffect } from "react";
-import '../homepage/homePage.css';
+import React, { useState, useEffect } from "react";
+import './homePage.css';
 import Navbar from '../navbar/navBar';
 
 

@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+  password String
+  role     Role
+  courses  Course[] @relation("TeacherCourses") // courses this user teaches
+  enrollments Enrollment[]
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  teacher     User     @relation("TeacherCourses", fields: [teacherId], references: [id])
+  teacherId   Int
+  videos      Video[]
+  enrollments Enrollment[]
+}
+
+model Video {
+  id       Int    @id @default(autoincrement())
+  title    String
+  url      String
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+}
+
+model Enrollment {
+  id        Int    @id @default(autoincrement())
+  student   User   @relation(fields: [studentId], references: [id])
+  studentId Int
+  course    Course @relation(fields: [courseId], references: [id])
+  courseId  Int
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
