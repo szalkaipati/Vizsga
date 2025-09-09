@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api, { setAuthToken } from "../api/axios";
 import { useNavigate } from "react-router-dom";
+// import bcrypt from "bcrypt";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,11 +10,21 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+
+    
+    
     try {
       const res = await api.post("/auth/login", { email, password });
+
+      console.log("Login response:", res.data);
+
       const { token, user } = res.data;
       localStorage.setItem("token", token);
       setAuthToken(token);
+      
+      console.log("Login attempt", email, password, user?.password);
+      // const match = await bcrypt.compare("password123", "$2b$10$bEsla7C440G3PzyW5HwAPurzKB/w1My38lgvCAhEIGiDmEFpOpcCW");
+      // console.log(match); // should be true
 
       // Redirect based on role
       if (user.role === "ADMIN") navigate("/admin");

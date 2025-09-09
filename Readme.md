@@ -32,3 +32,13 @@ curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"admin123"}'
 
+
+## Docker Mysql:
+
+docker exec -it mysql_skhill mysql -u user -p
+
+"password"
+
+USE skhill;
+
+SELECT id, email, password, role FROM User WHERE email = 'admin@example.com';

@@ -6,28 +6,31 @@ const prisma = new PrismaClient();
 async function main() {
   const password = await bcrypt.hash("password123", 10);
 
+  // Helper to create user if not exists
+  async function createUserIfNotExists(name: string, email: string, role: Role) {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (!existing) {
+      await prisma.user.create({
+        data: { name, email, password, role },
+      });
+      console.log(`${role} created: ${email}`);
+    } else {
+      console.log(`${role} already exists: ${email}`);
+    }
+  }
+
   // Admin
-  await prisma.user.create({
-    data: { name: "Admin", email: "admin@example.com", password, role: Role.ADMIN }
-  });
+  await createUserIfNotExists("Admin", "admin@example.com", Role.ADMIN);
 
   // Teachers
-  await prisma.user.create({
-    data: { name: "Teacher1", email: "teacher1@example.com", password, role: Role.TEACHER }
-  });
-  await prisma.user.create({
-    data: { name: "Teacher2", email: "teacher2@example.com", password, role: Role.TEACHER }
-  });
+  await createUserIfNotExists("Teacher1", "teacher1@example.com", Role.TEACHER);
+  await createUserIfNotExists("Teacher2", "teacher2@example.com", Role.TEACHER);
 
   // Students
-  await prisma.user.create({
-    data: { name: "Student1", email: "student1@example.com", password, role: Role.STUDENT }
-  });
-  await prisma.user.create({
-    data: { name: "Student2", email: "student2@example.com", password, role: Role.STUDENT }
-  });
+  await createUserIfNotExists("Student1", "student1@example.com", Role.STUDENT);
+  await createUserIfNotExists("Student2", "student2@example.com", Role.STUDENT);
 
-  console.log("Database seeded successfully");
+  console.log("Database seeding complete");
 }
 
 main()

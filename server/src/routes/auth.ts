@@ -37,18 +37,17 @@ router.post("/signup", async (req, res) => {
 
 // Login route
 router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ message: "Email and password required" });
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) return res.status(400).json({ message: "Email and password required" });
-
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) return res.status(401).json({ message: "Invalid credentials" });
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
 
     res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {

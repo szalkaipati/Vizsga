@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { authenticate, authorize, AuthRequest } from "../middleware/authMiddleware";
@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 router.use(authenticate, authorize(["ADMIN"]));
 
 // GET all users
-router.get("/users", async (req, AuthRequest, res) => {
+router.get("/users", async (req: AuthRequest, res: Response) => {
   try {
     const users = await prisma.user.findMany({
       select: { id: true, name: true, email: true, role: true }
@@ -23,7 +23,7 @@ router.get("/users", async (req, AuthRequest, res) => {
 });
 
 // CREATE a user (student or teacher)
-router.post("/create-user", async (req: AuthRequest, res) => {
+router.post("/create-user", async (req: AuthRequest, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -54,7 +54,7 @@ router.post("/create-user", async (req: AuthRequest, res) => {
 });
 
 // DELETE a user by ID
-router.delete("/users/:id", async (req: AuthRequest, res) => {
+router.delete("/users/:id", async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const user = await prisma.user.delete({ where: { id: Number(id) } });
@@ -66,7 +66,7 @@ router.delete("/users/:id", async (req: AuthRequest, res) => {
 });
 
 // UPDATE a user
-router.put("/users/:id", async (req: AuthRequest, res) => {
+router.put("/users/:id", async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { name, email, password, role } = req.body;
