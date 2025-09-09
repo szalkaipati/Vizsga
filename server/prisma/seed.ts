@@ -20,6 +20,7 @@ async function main() {
   }
 
   // Admin
+  await prisma.user.deleteMany({ where: { email: "admin@example.com" } });
   await createUserIfNotExists("Admin", "admin@example.com", Role.ADMIN);
 
   // Teachers

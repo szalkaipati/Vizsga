@@ -37,14 +37,20 @@ router.post("/signup", async (req, res) => {
 
 // Login route
 router.post("/login", async (req, res) => {
+
+  console.log("Login body:", req.body);
+
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ message: "Email and password required" });
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log("User found:", user);
+
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", passwordMatch);
     if (!passwordMatch) return res.status(401).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
