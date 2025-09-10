@@ -68,23 +68,33 @@ router.post("/courses/:courseId/videos", async (req: AuthRequest, res) => {
   }
 });
 
-// Delete a course (only teacher's own)
+// Delete a course (only teacher's own) with related videos and enrollments
 router.delete("/courses/:courseId", async (req: AuthRequest, res) => {
   const { courseId } = req.params;
+  const courseIdNum = Number(courseId);
 
   try {
-    const course = await prisma.course.findUnique({ where: { id: Number(courseId) } });
-
+    // Fetch course and check ownership
+    const course = await prisma.course.findUnique({ where: { id: courseIdNum } });
     if (!course || course.teacherId !== req.user!.userId) {
       return res.status(403).json({ message: "Forbidden: Not your course" });
     }
 
-    await prisma.course.delete({ where: { id: Number(courseId) } });
-    res.json({ message: "Course deleted" });
+    // Delete related videos first
+    await prisma.video.deleteMany({ where: { courseId: courseIdNum } });
+
+    // Delete related enrollments
+    await prisma.enrollment.deleteMany({ where: { courseId: courseIdNum } });
+
+    // Finally delete the course
+    await prisma.course.delete({ where: { id: courseIdNum } });
+
+    res.json({ message: "Course deleted successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 export default router;

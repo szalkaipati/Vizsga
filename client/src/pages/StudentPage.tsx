@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import "./StudentPage.css";
 
 interface Video {
   id: number;
@@ -73,36 +74,38 @@ const StudentPage = () => {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Student Dashboard</h1>
+    <div className="student-page">
+      <h1>Student Dashboard</h1>
 
       {teachers.map(teacher => (
-        <div key={teacher.id} className="mb-4 border p-2 rounded">
-          <h2 className="font-bold">{teacher.name}</h2>
+        <div key={teacher.id} className="teacher-card">
+          <h2>{teacher.name}</h2>
           <p>{teacher.email}</p>
-          <button className="bg-blue-500 text-white px-2 rounded my-1" onClick={() => { setSelectedTeacherId(teacher.id); fetchCourses(teacher.id); }}>Show Courses</button>
+          <button className="button show-courses-button" onClick={() => { setSelectedTeacherId(teacher.id); fetchCourses(teacher.id); }}>
+            Show Courses
+          </button>
 
           {teacher.courses?.map(course => (
-            <div key={course.id} className="ml-4 my-2 p-2 border rounded">
-              <h3 className="font-bold">{course.name}</h3>
+            <div key={course.id} className="course-card">
+              <h3>{course.name}</h3>
               <p>{course.description}</p>
               <ul>
                 {course.videos.map(v => (
                   <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
                 ))}
               </ul>
-              <button className="bg-green-500 text-white px-2 rounded" onClick={() => handleEnroll(course.id)}>Enroll</button>
+              <button className="button enroll-button" onClick={() => handleEnroll(course.id)}>Enroll</button>
             </div>
           ))}
         </div>
       ))}
 
       <div className="mt-8">
-        <h2 className="text-xl font-bold mb-2">My Courses</h2>
+        <h2>My Courses</h2>
         {enrolledCourses.length === 0 && <p>No courses enrolled yet.</p>}
         {enrolledCourses.map(course => (
-          <div key={course.id} className="mb-2 p-2 border rounded">
-            <h3 className="font-bold">{course.name}</h3>
+          <div key={course.id} className="enrolled-course-card">
+            <h3>{course.name}</h3>
             <p>Teacher: {course.teacher.name} ({course.teacher.email})</p>
             <ul>
               {course.videos.map(v => (
