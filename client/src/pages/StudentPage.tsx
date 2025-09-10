@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "./StudentPage.css";
+import Navbar from "./Navbar";
 
 interface Video {
   id: number;
@@ -74,48 +75,51 @@ const StudentPage = () => {
   }, []);
 
   return (
-    <div className="student-page">
-      <h1>Student Dashboard</h1>
+    <>
+      <Navbar />
+      <div className="student-page">
+        <h1>Student Dashboard</h1>
 
-      {teachers.map(teacher => (
-        <div key={teacher.id} className="teacher-card">
-          <h2>{teacher.name}</h2>
-          <p>{teacher.email}</p>
-          <button className="button show-courses-button" onClick={() => { setSelectedTeacherId(teacher.id); fetchCourses(teacher.id); }}>
-            Show Courses
-          </button>
+        {teachers.map(teacher => (
+          <div key={teacher.id} className="teacher-card">
+            <h2>{teacher.name}</h2>
+            <p>{teacher.email}</p>
+            <button className="button show-courses-button" onClick={() => { setSelectedTeacherId(teacher.id); fetchCourses(teacher.id); }}>
+              Show Courses
+            </button>
 
-          {teacher.courses?.map(course => (
-            <div key={course.id} className="course-card">
+            {teacher.courses?.map(course => (
+              <div key={course.id} className="course-card">
+                <h3>{course.name}</h3>
+                <p>{course.description}</p>
+                <ul>
+                  {course.videos.map(v => (
+                    <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
+                  ))}
+                </ul>
+                <button className="button enroll-button" onClick={() => handleEnroll(course.id)}>Enroll</button>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <div className="mt-8">
+          <h2>My Courses</h2>
+          {enrolledCourses.length === 0 && <p>No courses enrolled yet.</p>}
+          {enrolledCourses.map(course => (
+            <div key={course.id} className="enrolled-course-card">
               <h3>{course.name}</h3>
-              <p>{course.description}</p>
+              <p>Teacher: {course.teacher.name} ({course.teacher.email})</p>
               <ul>
                 {course.videos.map(v => (
                   <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
                 ))}
               </ul>
-              <button className="button enroll-button" onClick={() => handleEnroll(course.id)}>Enroll</button>
             </div>
           ))}
         </div>
-      ))}
-
-      <div className="mt-8">
-        <h2>My Courses</h2>
-        {enrolledCourses.length === 0 && <p>No courses enrolled yet.</p>}
-        {enrolledCourses.map(course => (
-          <div key={course.id} className="enrolled-course-card">
-            <h3>{course.name}</h3>
-            <p>Teacher: {course.teacher.name} ({course.teacher.email})</p>
-            <ul>
-              {course.videos.map(v => (
-                <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
-              ))}
-            </ul>
-          </div>
-        ))}
       </div>
-    </div>
+    </>
   );
 };
 

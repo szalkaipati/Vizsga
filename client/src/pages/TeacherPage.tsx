@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "./TeacherPage.css";
+import Navbar from "./Navbar";
 
 interface Video {
   id: number;
@@ -71,39 +72,42 @@ const TeacherPage = () => {
   }, []);
 
   return (
-    <div className="teacher-page">
-      <h1>Teacher Dashboard</h1>
+    <>
+      <Navbar />
+      <div className="teacher-page">
+        <h1>Teacher Dashboard</h1>
 
-      <div className="section">
-        <h2>Create Course</h2>
-        <input placeholder="Name" value={courseName} onChange={e => setCourseName(e.target.value)} />
-        <input placeholder="Description" value={courseDesc} onChange={e => setCourseDesc(e.target.value)} />
-        <button className="button create-button" onClick={handleCreateCourse}>Create</button>
-      </div>
+        <div className="section">
+          <h2>Create Course</h2>
+          <input placeholder="Name" value={courseName} onChange={e => setCourseName(e.target.value)} />
+          <input placeholder="Description" value={courseDesc} onChange={e => setCourseDesc(e.target.value)} />
+          <button className="button create-button" onClick={handleCreateCourse}>Create</button>
+        </div>
 
-      <div className="section">
-        <h2>Courses</h2>
-        {courses.map(course => (
-          <div key={course.id} className="course-card">
-            <h3>{course.name}</h3>
-            <p>{course.description}</p>
-            <button className="button delete-button mt-2" onClick={() => handleDeleteCourse(course.id)}>Delete Course</button>
+        <div className="section">
+          <h2>Courses</h2>
+          {courses.map(course => (
+            <div key={course.id} className="course-card">
+              <h3>{course.name}</h3>
+              <p>{course.description}</p>
+              <button className="button delete-button mt-2" onClick={() => handleDeleteCourse(course.id)}>Delete Course</button>
 
-            <div className="mt-2">
-              <input placeholder="Video Title" value={videoTitle} onChange={e => setVideoTitle(e.target.value)} />
-              <input placeholder="Video URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} />
-              <button className="button add-video-button" onClick={() => { setSelectedCourseId(course.id); handleAddVideo(); }}>Add Video</button>
+              <div className="mt-2">
+                <input placeholder="Video Title" value={videoTitle} onChange={e => setVideoTitle(e.target.value)} />
+                <input placeholder="Video URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} />
+                <button className="button add-video-button" onClick={() => { setSelectedCourseId(course.id); handleAddVideo(); }}>Add Video</button>
+              </div>
+
+              <ul>
+                {course.videos.map(video => (
+                  <li key={video.id}><a href={video.url} target="_blank" rel="noreferrer">{video.title}</a></li>
+                ))}
+              </ul>
             </div>
-
-            <ul>
-              {course.videos.map(video => (
-                <li key={video.id}><a href={video.url} target="_blank" rel="noreferrer">{video.title}</a></li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

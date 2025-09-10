@@ -16,6 +16,7 @@ const Login = () => {
 
       const { token, user } = res.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
       setAuthToken(token);
 
       console.log("Login attempt", email, password, user?.password);

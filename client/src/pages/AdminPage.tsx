@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "./AdminPage.css";
+import Navbar from "./Navbar";
 
 interface User {
   id: number;
@@ -52,49 +53,52 @@ const AdminPage = () => {
   }, []);
 
   return (
-    <div className="admin-page">
-      <h1>Admin Dashboard</h1>
+    <>
+      <Navbar />
+      <div className="admin-page">
+        <h1>Admin Dashboard</h1>
 
-      <div className="section">
-        <h2>Create User</h2>
-        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        <select value={role} onChange={e => setRole(e.target.value as any)}>
-          <option value="STUDENT">Student</option>
-          <option value="TEACHER">Teacher</option>
-        </select>
-        <button className="button create-button" onClick={handleCreate}>Create</button>
-      </div>
+        <div className="section">
+          <h2>Create User</h2>
+          <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+          <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <select value={role} onChange={e => setRole(e.target.value as any)}>
+            <option value="STUDENT">Student</option>
+            <option value="TEACHER">Teacher</option>
+          </select>
+          <button className="button create-button" onClick={handleCreate}>Create</button>
+        </div>
 
-      <div className="section">
-        <h2>Users</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.id}>
-                <td>{u.id}</td>
-                <td>{u.name}</td>
-                <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td>
-                  <button className="button delete-button" onClick={() => handleDelete(u.id)}>Delete</button>
-                </td>
+        <div className="section">
+          <h2>Users</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.id}>
+                  <td>{u.id}</td>
+                  <td>{u.name}</td>
+                  <td>{u.email}</td>
+                  <td>{u.role}</td>
+                  <td>
+                    <button className="button delete-button" onClick={() => handleDelete(u.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
