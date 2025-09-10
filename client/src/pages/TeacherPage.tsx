@@ -20,10 +20,9 @@ const TeacherPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [courseName, setCourseName] = useState("");
   const [courseDesc, setCourseDesc] = useState("");
-  const [videoTitle, setVideoTitle] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
-  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [videoInputs, setVideoInputs] = useState<{ [key: number]: { title: string; url: string } }>({});
 
+  // Fetch teacher's courses
   const fetchCourses = async () => {
     try {
       const res = await api.get("/teacher/courses");
@@ -33,11 +32,12 @@ const TeacherPage = () => {
     }
   };
 
+  // Create a new course
   const handleCreateCourse = async () => {
     if (!courseName || !courseDesc) return;
     try {
       await api.post("/teacher/courses", { name: courseName, description: courseDesc });
-      setCourseName(""); 
+      setCourseName("");
       setCourseDesc("");
       fetchCourses();
     } catch (err) {
@@ -45,18 +45,32 @@ const TeacherPage = () => {
     }
   };
 
-  const handleAddVideo = async () => {
-    if (!selectedCourseId || !videoTitle || !videoUrl) return;
+  // Handle per-course video input change
+  const handleVideoChange = (courseId: number, field: "title" | "url", value: string) => {
+    setVideoInputs(prev => ({
+      ...prev,
+      [courseId]: {
+        ...prev[courseId],
+        [field]: value
+      }
+    }));
+  };
+
+  // Add video to a course
+  const handleAddVideo = async (courseId: number) => {
+    const input = videoInputs[courseId];
+    if (!input?.title || !input?.url) return;
+
     try {
-      await api.post(`/teacher/courses/${selectedCourseId}/videos`, { title: videoTitle, url: videoUrl });
-      setVideoTitle(""); 
-      setVideoUrl("");
+      await api.post(`/teacher/courses/${courseId}/videos`, { title: input.title, url: input.url });
+      setVideoInputs(prev => ({ ...prev, [courseId]: { title: "", url: "" } })); // clear inputs
       fetchCourses();
     } catch (err) {
       console.error(err);
     }
   };
 
+  // Delete a course
   const handleDeleteCourse = async (id: number) => {
     if (!window.confirm("Delete course?")) return;
     try {
@@ -79,9 +93,19 @@ const TeacherPage = () => {
 
         <div className="section">
           <h2>Create Course</h2>
-          <input placeholder="Name" value={courseName} onChange={e => setCourseName(e.target.value)} />
-          <input placeholder="Description" value={courseDesc} onChange={e => setCourseDesc(e.target.value)} />
-          <button className="button create-button" onClick={handleCreateCourse}>Create</button>
+          <input
+            placeholder="Name"
+            value={courseName}
+            onChange={e => setCourseName(e.target.value)}
+          />
+          <input
+            placeholder="Description"
+            value={courseDesc}
+            onChange={e => setCourseDesc(e.target.value)}
+          />
+          <button className="button create-button" onClick={handleCreateCourse}>
+            Create
+          </button>
         </div>
 
         <div className="section">
@@ -90,17 +114,31 @@ const TeacherPage = () => {
             <div key={course.id} className="course-card">
               <h3>{course.name}</h3>
               <p>{course.description}</p>
-              <button className="button delete-button mt-2" onClick={() => handleDeleteCourse(course.id)}>Delete Course</button>
+              <button className="button delete-button mt-2" onClick={() => handleDeleteCourse(course.id)}>
+                Delete Course
+              </button>
 
               <div className="mt-2">
-                <input placeholder="Video Title" value={videoTitle} onChange={e => setVideoTitle(e.target.value)} />
-                <input placeholder="Video URL" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} />
-                <button className="button add-video-button" onClick={() => { setSelectedCourseId(course.id); handleAddVideo(); }}>Add Video</button>
+                <input
+                  placeholder="Video Title"
+                  value={videoInputs[course.id]?.title || ""}
+                  onChange={e => handleVideoChange(course.id, "title", e.target.value)}
+                />
+                <input
+                  placeholder="Video URL"
+                  value={videoInputs[course.id]?.url || ""}
+                  onChange={e => handleVideoChange(course.id, "url", e.target.value)}
+                />
+                <button className="button add-video-button" onClick={() => handleAddVideo(course.id)}>
+                  Add Video
+                </button>
               </div>
 
               <ul>
                 {course.videos.map(video => (
-                  <li key={video.id}><a href={video.url} target="_blank" rel="noreferrer">{video.title}</a></li>
+                  <li key={video.id}>
+                    <a href={video.url} target="_blank" rel="noreferrer">{video.title}</a>
+                  </li>
                 ))}
               </ul>
             </div>
