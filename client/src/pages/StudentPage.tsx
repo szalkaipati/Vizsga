@@ -25,11 +25,12 @@ interface Teacher {
 const StudentPage = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedTeacherId, setSelectedTeacherId] = useState<number | null>(null);
+  const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
 
   const fetchTeachers = async () => {
     try {
       const res = await api.get("/student/teachers");
-      setTeachers(res.data);
+      setTeachers(res.data.teachers); // <-- use .teachers
     } catch (err) {
       console.error(err);
     }
@@ -38,7 +39,11 @@ const StudentPage = () => {
   const fetchCourses = async (teacherId: number) => {
     try {
       const res = await api.get(`/student/teachers/${teacherId}/courses`);
-      setTeachers(prev => prev.map(t => t.id === teacherId ? { ...t, courses: res.data } : t));
+      setTeachers(prev =>
+        prev.map(t =>
+          t.id === teacherId ? { ...t, courses: res.data.courses } : t
+        )
+      );
     } catch (err) {
       console.error(err);
     }
@@ -53,8 +58,18 @@ const StudentPage = () => {
     }
   };
 
+  const fetchEnrolledCourses = async () => {
+    try {
+      const res = await api.get("/student/my-courses");
+      setEnrolledCourses(res.data.courses); // <-- matches your backend
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchTeachers();
+    fetchEnrolledCourses();
   }, []);
 
   return (
@@ -81,6 +96,22 @@ const StudentPage = () => {
           ))}
         </div>
       ))}
+
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-2">My Courses</h2>
+        {enrolledCourses.length === 0 && <p>No courses enrolled yet.</p>}
+        {enrolledCourses.map(course => (
+          <div key={course.id} className="mb-2 p-2 border rounded">
+            <h3 className="font-bold">{course.name}</h3>
+            <p>Teacher: {course.teacher.name} ({course.teacher.email})</p>
+            <ul>
+              {course.videos.map(v => (
+                <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

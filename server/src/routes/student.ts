@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
-import { authenticate, AuthRequest } from "../middleware/authMiddleware";
+import { authenticate, authorize, AuthRequest } from "../middleware/authMiddleware";
 import { permit } from "../middleware/roleMiddleware";
 
 const router = Router();
 const prisma = new PrismaClient();
 
 // Protect all routes: only logged-in students
-router.use(authenticate, permit("STUDENT"));
+// router.use(authenticate, permit("STUDENT"));
+
+router.use(authenticate, authorize(["STUDENT"]));
 
 // 1️⃣ List all teachers
 router.get("/teachers", async (req, res) => {
