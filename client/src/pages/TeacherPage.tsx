@@ -21,8 +21,8 @@ const TeacherPage = () => {
   const [courseName, setCourseName] = useState("");
   const [courseDesc, setCourseDesc] = useState("");
   const [videoInputs, setVideoInputs] = useState<{ [key: number]: { title: string; url: string } }>({});
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null); // <-- Selected video
 
-  // Fetch teacher's courses
   const fetchCourses = async () => {
     try {
       const res = await api.get("/teacher/courses");
@@ -32,7 +32,6 @@ const TeacherPage = () => {
     }
   };
 
-  // Create a new course
   const handleCreateCourse = async () => {
     if (!courseName || !courseDesc) return;
     try {
@@ -45,7 +44,6 @@ const TeacherPage = () => {
     }
   };
 
-  // Handle per-course video input change
   const handleVideoChange = (courseId: number, field: "title" | "url", value: string) => {
     setVideoInputs(prev => ({
       ...prev,
@@ -56,21 +54,19 @@ const TeacherPage = () => {
     }));
   };
 
-  // Add video to a course
   const handleAddVideo = async (courseId: number) => {
     const input = videoInputs[courseId];
     if (!input?.title || !input?.url) return;
 
     try {
       await api.post(`/teacher/courses/${courseId}/videos`, { title: input.title, url: input.url });
-      setVideoInputs(prev => ({ ...prev, [courseId]: { title: "", url: "" } })); // clear inputs
+      setVideoInputs(prev => ({ ...prev, [courseId]: { title: "", url: "" } }));
       fetchCourses();
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Delete a course
   const handleDeleteCourse = async (id: number) => {
     if (!window.confirm("Delete course?")) return;
     try {
@@ -79,6 +75,11 @@ const TeacherPage = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const getEmbedUrl = (url: string) => {
+    const match = url.match(/v=([a-zA-Z0-9_-]+)/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : url;
   };
 
   useEffect(() => {
@@ -137,13 +138,34 @@ const TeacherPage = () => {
               <ul>
                 {course.videos.map(video => (
                   <li key={video.id}>
-                    <a href={video.url} target="_blank" rel="noreferrer">{video.title}</a>
+                    <button
+                      className="video-link-button"
+                      onClick={() => setSelectedVideoUrl(video.url)}
+                    >
+                      {video.title}
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
+
+        {selectedVideoUrl && (
+          <div className="video-player">
+            <h3>Playing Video</h3>
+            <iframe
+              width="560"
+              height="315"
+              src={getEmbedUrl(selectedVideoUrl)}
+              title="Video Player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <button onClick={() => setSelectedVideoUrl(null)}>Close Video</button>
+          </div>
+        )}
       </div>
     </>
   );
