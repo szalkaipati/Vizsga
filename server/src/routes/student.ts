@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 
 router.use(authenticate, authorize(["STUDENT"]));
 
-// 1️⃣ List all teachers
+// List all teachers
 router.get("/teachers", async (req, res) => {
   try {
     const teachers = await prisma.user.findMany({
@@ -25,7 +25,7 @@ router.get("/teachers", async (req, res) => {
   }
 });
 
-// 2️⃣ List courses of a specific teacher
+// List courses of a specific teacher
 router.get("/teachers/:teacherId/courses", async (req, res) => {
   const teacherId = Number(req.params.teacherId);
 
@@ -42,7 +42,7 @@ router.get("/teachers/:teacherId/courses", async (req, res) => {
   }
 });
 
-// 3️⃣ Enroll in a course
+// Enroll in a course
 router.post("/courses/:courseId/enroll", async (req: AuthRequest, res) => {
   const studentId = req.user!.userId;
   const courseId = Number(req.params.courseId);
@@ -66,7 +66,7 @@ router.post("/courses/:courseId/enroll", async (req: AuthRequest, res) => {
   }
 });
 
-// 4️⃣ List student's enrolled courses
+// List student's enrolled courses
 router.get("/my-courses", async (req: AuthRequest, res) => {
   const studentId = req.user!.userId;
 
