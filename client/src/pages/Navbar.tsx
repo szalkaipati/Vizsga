@@ -6,6 +6,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
 
+
   const fetchUser = async () => {
     try {
       const res = await api.get("/auth/me", {
@@ -37,12 +38,14 @@ const Navbar = () => {
       <div className="navbar-right">
         {user ? (
           <>
-            <span className="navbar-greeting">Hi, {user.name}</span>
-            <Link to="/profile" className="btn">My Profile</Link>
-            <button onClick={handleLogout} className="btn">Logout</button>
+            <span className="navbar-greeting">Szia, {user.name}</span>
+            <Link to="/profile" className="btn">Profilom</Link>
+            <Link to="/admin" className="btn">Admin</Link>
+            <Link to="/" className="btn">Főoldal</Link>
+            <button onClick={handleLogout} className="btn">Kijelentkezés</button>
           </>
         ) : (
-          <Link to="/login" className="btn">Login</Link>
+          <Link to="/login" className="btn">Bejelentkezés</Link>
         )}
       </div>
     </nav>

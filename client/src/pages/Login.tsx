@@ -32,7 +32,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
+      <h1>Bejelentkezés</h1>
       {error && <p className="error-text">{error}</p>}
       <input
         type="email"
@@ -46,7 +46,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin}>Bejelentkezés</button>
     </div>
   );
 };

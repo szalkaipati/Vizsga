@@ -1,30 +1,66 @@
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
+import { useEffect, useState } from "react";
+import api, { setAuthToken } from "../api/axios";
+import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
+   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
+
+
+  const fetchUser = async () => {
+    try {
+      const res = await api.get("/auth/me", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      setUser(res.data);
+    } catch (err) {
+      console.error(err);
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setAuthToken(token);
+    fetchUser();
+  }, []);
+
 
   return (
     <div className="homepage">
-
+      <Navbar />
       {/* Banner */}
       <div className="banner">
+        <br/>
+        <br/>
+        
+        {user ? (
+                  <>
+                    <div></div>
+                  </>
+                ) : (
+                    <button onClick={() => navigate("/login")} className="login-button">Bejelentkezés</button>
+
+                )}
+      </div>
+      <div className="banner-text">
         <h1>Segítünk elérni a céljait!</h1>
         <p>Kezdje akár egy kattintással!</p>
-        <button onClick={() => navigate("/login")} className="login-button">Bejelentkezés</button>
       </div>
-
       {/* Numbers / Stats */}
-      <section className="stats">
-        <div className="stat-card">
+      <section className="row stats">
+        <div className="col-lg-3 col-md-3 col-sm stat-card">
           <p className="stat-number">100+</p>
           <p>Videók</p>
         </div>
-        <div className="stat-card">
+        <div className="col-lg-3 col-md-3 col-sm stat-card">
           <p className="stat-number">50+</p>
           <p>Tanár</p>
         </div>
-        <div className="stat-card">
+        <div className="col-lg-3 col-md-3 col-sm stat-card">
           <p className="stat-number">200+</p>
           <p>Diák</p>
         </div>

@@ -1,0 +1,19 @@
+.background{
+    background-image: url("/banner.png") !important;
+    background-blend-mode:darken; background-color:rgba(0, 0, 0, 0.607);
+    background-repeat: no-repeat;
+    background-attachment:local;
+    background-size: cover;
+    background-position: center;
+}
+
+section{
+    background-color: aliceblue !important;
+    color: #000000;
+    padding: 10px;
+    margin-left: 26%;
+    text-align: center;
+    width: 50%;
+    margin-bottom: 100px;
+    font-size: 2.5rem;
+}

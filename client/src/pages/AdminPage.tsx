@@ -34,12 +34,12 @@ const AdminPage = () => {
       setPassword("");
       fetchUsers();
     } catch (err: any) {
-      alert(err.response?.data?.message || "Error creating user");
+      alert(err.response?.data?.message || "A felhasználó létrehozása közben hiba történt");
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure?")) return;
+    if (!window.confirm("Biztos törölni szeretné?\nE folyamat a felhasználó összes adatát törli!")) return;
     try {
       await api.delete(`/admin/users/${id}`);
       fetchUsers();
@@ -56,30 +56,31 @@ const AdminPage = () => {
     <>
       <Navbar />
       <div className="admin-page">
-        <h1>Admin Dashboard</h1>
+        <h1>Adminisztrációs oldal</h1>
 
         <div className="section">
-          <h2>Create User</h2>
-          <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+          <h2>Felhasználó létrehozása</h2>
+          <input placeholder="Név" value={name} onChange={e => setName(e.target.value)} />
           <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-          <input placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <input placeholder="Jelszó" value={password} onChange={e => setPassword(e.target.value)} />
           <select value={role} onChange={e => setRole(e.target.value as any)}>
-            <option value="STUDENT">Student</option>
-            <option value="TEACHER">Teacher</option>
+            <option value="STUDENT">Tanuló</option>
+            <option value="TEACHER">Tanár</option>
           </select>
-          <button className="button create-button" onClick={handleCreate}>Create</button>
+          <button className="button create-button" onClick={handleCreate}>Létrehozás</button>
         </div>
 
         <div className="section">
-          <h2>Users</h2>
-          <table>
+          <h2>Felhasználók</h2>
+          <div className="table-responsive">
+          <table >
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Név</th>
                 <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
+                <th>Felhasználói típus</th>
+                <th>Kezelés</th>
               </tr>
             </thead>
             <tbody>
@@ -90,12 +91,13 @@ const AdminPage = () => {
                   <td>{u.email}</td>
                   <td>{u.role}</td>
                   <td>
-                    <button className="button delete-button" onClick={() => handleDelete(u.id)}>Delete</button>
+                    <button className="button delete-button" onClick={() => handleDelete(u.id)}>Törlés</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

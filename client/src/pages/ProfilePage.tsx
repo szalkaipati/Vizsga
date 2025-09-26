@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
 import Navbar from "./Navbar";
+import "./ProfilePage.css";
 
 interface UserProfile {
   id: number;
@@ -28,16 +29,19 @@ const ProfilePage = () => {
     fetchProfile();
   }, [id]);
 
-  if (!profile) return <p>Loading profile...</p>;
+  if (!profile) return <p>Profil betöltése...</p>;
 
   return (
     <>
       <Navbar />
-      <div className="p-6 border rounded">
-        <h1 className="text-2xl font-bold mb-2">{profile.name}'s Profile</h1>
-        <p><strong>Email:</strong> {profile.email}</p>
-        <p><strong>Role:</strong> {profile.role}</p>
-        {/* You can add more info like courses for teachers or enrolled courses for students */}
+      <div className="background">
+        <div className="section">
+          <h1 className="name">{profile.name}'s Profile</h1>
+          <hr/>
+          <p><strong>Email:</strong> {profile.email}</p>
+          <p><strong>Felhasználói szerep:</strong> {profile.role}</p>
+          {/* You can add more info like courses for teachers or enrolled courses for students */}
+        </div>
       </div>
     </>
     

@@ -1,22 +1,24 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #000;
-  color: #DEDEDE;
+  background-color: #1b1b1b;
+  color: #DEDEDE !important;
 }
 
 /* Banner */
 .banner {
+  background-image: url('/banner.png') !important;
+  background-position:top center !important ;
+  background-size: cover !important;
   text-align: center;
-  padding: 80px 20px;
+  padding: 150px 20px;
   background: linear-gradient(to right, #1c1c1c, #111);
 }
-.banner h1 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-.banner p {
-  font-size: 18px;
+
+.banner-text{
+  color: #fff;
+  text-align: center;
+  text-shadow: #0e0e0e 3px 3px 10px;
   margin-bottom: 20px;
 }
 .login-button {
@@ -128,5 +130,5 @@ body {
   margin-bottom: 5px;
 }
 .footer-links a:hover {
-  color: #DEDEDE;
+  
 }

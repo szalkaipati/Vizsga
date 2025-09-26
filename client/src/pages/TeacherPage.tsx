@@ -90,10 +90,10 @@ const TeacherPage = () => {
     <>
       <Navbar />
       <div className="teacher-page">
-        <h1>Teacher Dashboard</h1>
+        <h1>Tanári oldal</h1>
 
         <div className="section">
-          <h2>Create Course</h2>
+          <h2>Kurzus létrehozása</h2>
           <input
             placeholder="Name"
             value={courseName}
@@ -105,7 +105,7 @@ const TeacherPage = () => {
             onChange={e => setCourseDesc(e.target.value)}
           />
           <button className="button create-button" onClick={handleCreateCourse}>
-            Create
+            Létrehozás
           </button>
         </div>
 
@@ -116,7 +116,7 @@ const TeacherPage = () => {
               <h3>{course.name}</h3>
               <p>{course.description}</p>
               <button className="button delete-button mt-2" onClick={() => handleDeleteCourse(course.id)}>
-                Delete Course
+                Kurzus törlése
               </button>
 
               <div className="mt-2">
@@ -131,7 +131,7 @@ const TeacherPage = () => {
                   onChange={e => handleVideoChange(course.id, "url", e.target.value)}
                 />
                 <button className="button add-video-button" onClick={() => handleAddVideo(course.id)}>
-                  Add Video
+                  Videó hozzáadása
                 </button>
               </div>
 
@@ -153,7 +153,7 @@ const TeacherPage = () => {
 
         {selectedVideoUrl && (
           <div className="video-player">
-            <h3>Playing Video</h3>
+            <h3>Videó</h3>
             <iframe
               width="560"
               height="315"
@@ -163,7 +163,7 @@ const TeacherPage = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
-            <button onClick={() => setSelectedVideoUrl(null)}>Close Video</button>
+            <button onClick={() => setSelectedVideoUrl(null)}>Videó bezárása</button>
           </div>
         )}
       </div>

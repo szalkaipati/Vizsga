@@ -86,7 +86,7 @@ export default function Videos() {
                     rel="noopener noreferrer"
                     className="button view-btn"
                   >
-                    <span className="text-xl">View</span> 
+                    <span className="text-xl">Megnyitás</span> 
                   </a>
                 </div>
               </div>

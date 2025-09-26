@@ -78,14 +78,14 @@ const StudentPage = () => {
     <>
       <Navbar />
       <div className="student-page">
-        <h1>Student Dashboard</h1>
+        <h1>Tanulói oldal</h1>
 
         {teachers.map(teacher => (
           <div key={teacher.id} className="teacher-card">
             <h2>{teacher.name}</h2>
             <p>{teacher.email}</p>
             <button className="button show-courses-button" onClick={() => { setSelectedTeacherId(teacher.id); fetchCourses(teacher.id); }}>
-              Show Courses
+              Kurzusok
             </button>
 
             {teacher.courses?.map(course => (
@@ -97,19 +97,19 @@ const StudentPage = () => {
                     <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
                   ))}
                 </ul>
-                <button className="button enroll-button" onClick={() => handleEnroll(course.id)}>Enroll</button>
+                <button className="button enroll-button" onClick={() => handleEnroll(course.id)}>Feliratkozás</button>
               </div>
             ))}
           </div>
         ))}
 
         <div className="mt-8">
-          <h2>My Courses</h2>
-          {enrolledCourses.length === 0 && <p>No courses enrolled yet.</p>}
+          <h2>Kurzusaim</h2>
+          {enrolledCourses.length === 0 && <p>Még nem iratkozott fel egy kurzusra sem.</p>}
           {enrolledCourses.map(course => (
             <div key={course.id} className="enrolled-course-card">
               <h3>{course.name}</h3>
-              <p>Teacher: {course.teacher.name} ({course.teacher.email})</p>
+              <p>Tanár: {course.teacher.name} ({course.teacher.email})</p>
               <ul>
                 {course.videos.map(v => (
                   <li key={v.id}><a href={v.url} target="_blank" rel="noreferrer">{v.title}</a></li>
